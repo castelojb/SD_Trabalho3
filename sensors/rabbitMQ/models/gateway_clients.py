@@ -1,6 +1,6 @@
 import pika
 import uuid
-from models.setup import URL_GATEWAY
+from models.setup import URL_GATEWAY, GATEWAY_SERVICES
 
 
 class GatewayRpcClient:
@@ -30,7 +30,7 @@ class GatewayRpcClient:
         self.corr_id = str(uuid.uuid4())
 
         self.channel.basic_publish(
-            exchange='',
+            exchange=GATEWAY_SERVICES['Identificate'],
             routing_key=queue,
             properties=pika.BasicProperties(
                 reply_to=self.callback_queue,
@@ -59,12 +59,12 @@ class GatewayBasicClient:
 
         self.channel = self.connection.channel()
 
-        self.channel.queue_declare(self.queue)
+        #self.channel.queue_declare(self.queue)
 
-    def __call__(self, payload):
+    def __call__(self, payload, exchange):
 
         self.channel.basic_publish(
-            exchange='',
+            exchange=exchange,
             routing_key=self.queue,
             body=payload
         )

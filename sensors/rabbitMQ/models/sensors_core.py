@@ -4,7 +4,7 @@ from threading import Thread
 
 from models.gateway_clients import GatewayRpcClient, GatewayBasicClient
 from models.messages import *
-from setup import StatusType, EquipmentType, QUEUES
+from setup import StatusType, EquipmentType, QUEUES, GATEWAY_SERVICES
 
 
 class Sensor:
@@ -29,7 +29,7 @@ class Sensor:
             self._id
         ))
 
-        self.gateway_basic_client(request)
+        self.gateway_basic_client(request, GATEWAY_SERVICES['EquipmentDied'])
 
         self.gateway_basic_client.kill()
 
@@ -79,7 +79,7 @@ class Smoke(Sensor):
         while True:
             stats = json.dumps(self.makeStatus())
 
-            self.gateway_basic_client(stats)
+            self.gateway_basic_client(stats, GATEWAY_SERVICES['ReceiveStatus'])
 
             self.temp += 1
 
@@ -115,7 +115,7 @@ class Light(Sensor):
         while True:
             stats = json.dumps(self.makeStatus())
 
-            self.gateway_basic_client(stats)
+            self.gateway_basic_client(stats, GATEWAY_SERVICES['ReceiveStatus'])
 
             self.temp += 1
 
@@ -151,7 +151,7 @@ class Temperature(Sensor):
         while True:
             stats = json.dumps(self.makeStatus())
 
-            self.gateway_basic_client(stats)
+            self.gateway_basic_client(stats, GATEWAY_SERVICES['ReceiveStatus'])
 
             self.temp += 1
 

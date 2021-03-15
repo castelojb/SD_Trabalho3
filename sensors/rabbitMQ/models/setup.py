@@ -8,6 +8,13 @@ QUEUES = dict(
     TEMPERATURE_QUEUE='temperature'
 )
 
+GATEWAY_SERVICES = dict(
+    Identificate='Identificate',
+    ReceiveStatus='ReceiveStatus',
+    EquipmentDied='EquipmentDied'
+)
+
+
 
 EquipmentType = dict(
     BOTH='BOTH',
