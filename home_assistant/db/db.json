@@ -1,1 +1,1 @@
-[]
+[{"name":"Fumaça","type":"SENSOR","id":"41681a550ce84","status":{},"ip":"0.0.0.0","port":8080},{"name":"Fumaça","type":"SENSOR","id":"3f4510dca1614","status":{"HAVE_SMOKE":false},"ip":"0.0.0.0","port":8080}]

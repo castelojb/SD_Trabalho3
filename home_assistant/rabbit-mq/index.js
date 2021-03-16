@@ -1,0 +1,2 @@
+require('./identificate')
+require('./smoke')

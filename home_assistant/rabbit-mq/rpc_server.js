@@ -13,14 +13,14 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       throw error1;
     }
     //var queue = "smoke";
-    var exchange = "Identificate";
+    var exchange = "dsdsdlçkml";
 
     channel.assertExchange(exchange, "fanout", {
       durable: false,
     });
 
     channel.assertQueue(
-      '',
+      'identificate',
       {
         exclusive: true,
       },

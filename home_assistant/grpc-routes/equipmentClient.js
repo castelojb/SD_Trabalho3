@@ -9,4 +9,4 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 
-module.exports = drpc.loadPackageDefinition(packageDefinition).EquipmentService;
+module.exports = grpc.loadPackageDefinition(packageDefinition).EquipmentService;

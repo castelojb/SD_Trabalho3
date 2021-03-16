@@ -1,5 +1,5 @@
 const EquipmentService = require("./EquipmentsService");
-const EquipmentsInMemory = require("../repository/EquipmentInMemory");
+const EquipmentsInMemory = require("../db/EquipmentInMemory");
 
 const equipmentsRepository = new EquipmentsInMemory();
 const equipmentsService = new EquipmentService(equipmentsRepository);
