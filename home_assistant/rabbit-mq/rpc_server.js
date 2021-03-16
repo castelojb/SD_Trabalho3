@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 var amqp = require("amqplib/callback_api");
+const Equipment = require("../models/Equipment");
+const equipmentsService = require("../service/inMemoryDependency");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
   if (error0) {
@@ -32,11 +34,15 @@ amqp.connect("amqp://localhost", function (error0, connection) {
         console.log(" [x] Awaiting RPC requests");
 
         channel.consume(q.queue, function reply(msg) {
-          console.log(JSON.parse(msg.content));
-          
-          // TODO: criar Equipamento e pegar id de verdade
+          const Identificate = JSON.parse(msg.content)
+          console.log(Identificate);
+          const newEquipment = new Equipment(Identificate.name, Identificate.type)
+            .setIp(Identificate.ip)
+            .setPort(Identificate.port)
+            .setType(Identificate.type);
+          equipmentsService.registerEquipment(newEquipment);
           let EquipmentId = {
-            value: 2,
+            value: newEquipment.id,
           };
 
           channel.sendToQueue(

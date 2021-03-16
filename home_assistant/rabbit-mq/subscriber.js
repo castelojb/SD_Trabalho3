@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var amqp = require('amqplib/callback_api');
+const equipmentsService = require("../service/inMemoryDependency");
 
 amqp.connect('amqp://localhost', function(error0, connection) {
     if (error0) {
@@ -27,9 +28,11 @@ amqp.connect('amqp://localhost', function(error0, connection) {
 
             channel.consume(q.queue, function(msg) {
                 if (msg.content) {
+                    const newStatus = JSON.parse(msg.content)
+                    console.log(newStatus);
                     // TODO: guardar valor no banco
+                    equipmentsService.updateStatus(newStatus.id, newStatus.type, newStatus.payload) // function?
                     // TODO: disparar atuador caso necessário
-                    console.log(JSON.parse(msg.content));
                 }
             }, {
                 noAck: true
