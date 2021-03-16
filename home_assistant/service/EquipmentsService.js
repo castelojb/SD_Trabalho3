@@ -66,19 +66,16 @@ class EquipmentService {
   updateStatus(id, type, status) {
     const equipment = this.repository.getById(id);
     this.repository.setStatus(id, type, status);
-    const client = new EquipmentClient(
-      `${equipment.ip}:${equipment.port}`,
-      grpc.credentials.createInsecure()
-    );
-    client.ReceiveUpdate(
-      {
+    const address = `${equipment.ip}:${equipment.port}`
+    const client = new EquipmentClient(address, grpc.credentials.createInsecure())
+    if (client.type === "actuator") {
+      client.ReceiveUpdate({
         type,
-        payload: status,
-      },
-      (error, response) => {
-        if (error) throw error;
-      }
-    );
+        payload: status
+      }, (error, response) => {
+          if (error) throw error;
+      })
+    }
   }
 }
 
