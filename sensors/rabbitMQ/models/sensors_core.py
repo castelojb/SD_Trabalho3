@@ -45,7 +45,7 @@ class Sensor:
 
         request = json.dumps(self.makeIdentification())
         print(request)
-        response = json.loads(self.gateway_rpc_client(request, self.queue))
+        response = json.loads(self.gateway_rpc_client(request))
 
         self.gateway_rpc_client.kill()
 

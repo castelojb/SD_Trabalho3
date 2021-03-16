@@ -1,6 +1,6 @@
 import pika
 import uuid
-from models.setup import URL_GATEWAY
+from models.setup import URL_GATEWAY, GATEWAY_SERVICES
 
 
 class GatewayRpcClient:
@@ -24,17 +24,17 @@ class GatewayRpcClient:
         if self.corr_id == props.correlation_id:
             self.response = body
 
-    def __call__(self, body, queue):
+    def __call__(self, body):
 
         self.response = None
 
         self.corr_id = str(uuid.uuid4())
 
-        self.channel.queue_declare( queue )
+        self.channel.queue_declare(GATEWAY_SERVICES['Identificate'])
 
         self.channel.basic_publish(
             exchange='',
-            routing_key=queue,
+            routing_key=GATEWAY_SERVICES['Identificate'],
             properties=pika.BasicProperties(
                 reply_to=self.callback_queue,
                 correlation_id=self.corr_id,

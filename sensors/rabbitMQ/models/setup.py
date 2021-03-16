@@ -1,4 +1,4 @@
-URL_GATEWAY = 'amqp://0.tcp.ngrok.io:19342'
+URL_GATEWAY = 'amqp://2.tcp.ngrok.io:17650'
 
 QUEUES = dict(
     LIGHT_QUEUE='light',
@@ -9,7 +9,7 @@ QUEUES = dict(
 )
 
 GATEWAY_SERVICES = dict(
-    Identificate='Identificate',
+    Identificate='identificate',
     ReceiveStatus='ReceiveStatus',
     EquipmentDied='EquipmentDied'
 )
