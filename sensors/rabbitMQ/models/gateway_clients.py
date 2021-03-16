@@ -1,7 +1,6 @@
 import pika
 import uuid
-from models.setup import URL_GATEWAY, GATEWAY_SERVICES
-import time
+from models.setup import URL_GATEWAY
 
 
 class GatewayRpcClient:
@@ -21,7 +20,6 @@ class GatewayRpcClient:
             on_message_callback=self.on_response,
             auto_ack=True)
 
-
     def on_response(self, ch, method, props, body):
         if self.corr_id == props.correlation_id:
             self.response = body
@@ -30,14 +28,12 @@ class GatewayRpcClient:
 
         self.response = None
 
-
         self.corr_id = str(uuid.uuid4())
-        self.channel.exchange_declare(GATEWAY_SERVICES['Identificate'], exchange_type='fanout')
 
         self.channel.queue_declare( queue )
 
         self.channel.basic_publish(
-            exchange=GATEWAY_SERVICES['Identificate'],
+            exchange='',
             routing_key=queue,
             properties=pika.BasicProperties(
                 reply_to=self.callback_queue,
@@ -45,7 +41,7 @@ class GatewayRpcClient:
             ),
 
             body=body)
-        print('aq')
+
         while self.response is None:
             self.connection.process_data_events()
 
@@ -59,24 +55,29 @@ class GatewayRpcClient:
 class GatewayBasicClient:
 
     def __init__(self, queue):
-        self.connection = pika.BlockingConnection(
-            pika.URLParameters(URL_GATEWAY))
 
         self.queue = queue
 
+    def make_conn(self):
+
+        self.connection = pika.BlockingConnection(
+            pika.URLParameters(URL_GATEWAY))
+
         self.channel = self.connection.channel()
+
+    def __call__(self, payload):
+
+        self.make_conn()
 
         self.channel.queue_declare(self.queue)
 
-    def __call__(self, payload, exchange):
-        
-        self.channel.exchange_declare(exchange, exchange_type='fanout')
-
         self.channel.basic_publish(
-            exchange=exchange,
+            exchange='',
             routing_key=self.queue,
             body=payload
         )
+
+        self.kill()
 
     def kill(self):
 

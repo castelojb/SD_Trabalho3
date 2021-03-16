@@ -6,6 +6,7 @@ from models.gateway_clients import GatewayRpcClient, GatewayBasicClient
 from models.messages import *
 from models.setup import StatusType, EquipmentType, QUEUES, GATEWAY_SERVICES
 
+import random
 
 class Sensor:
 
@@ -26,28 +27,29 @@ class Sensor:
         message = Id()
 
         request = json.dumps(message(
-            self._id
+            self._id,
+            GATEWAY_SERVICES['EquipmentDied']
         ))
 
-        self.gateway_basic_client(request, GATEWAY_SERVICES['EquipmentDied'])
+        self.gateway_basic_client(request)
 
         self.gateway_basic_client.kill()
 
     def makeIdentification(self):
         message = Identification()
         return message(
-            self.name, self.type, self.ip, self.port
+            self.name, self.type, self.ip, self.port, GATEWAY_SERVICES['Identificate']
         )
 
     def IdentificateClient(self):
 
         request = json.dumps(self.makeIdentification())
         print(request)
-        response = self.gateway_rpc_client(request, self.queue)
+        response = json.loads(self.gateway_rpc_client(request, self.queue))
 
         self.gateway_rpc_client.kill()
 
-        self._id = response.value
+        self._id = response['value']
 
 
 class Smoke(Sensor):
@@ -60,7 +62,7 @@ class Smoke(Sensor):
 
         super().__init__(ip, port, name, type_, queue)
 
-        self.temp = 10
+        self.smoke = False
 
         thread = Thread(target=self.SendStatus, args=[10])
 
@@ -71,7 +73,7 @@ class Smoke(Sensor):
         message = Status()
 
         return message(
-            StatusType['TURN_ON_OFF'], self.temp, self._id
+            StatusType['HAVE_SMOKE'], self.smoke, self._id, GATEWAY_SERVICES['ReceiveStatus']
         )
 
     def SendStatus(self, args):
@@ -79,9 +81,9 @@ class Smoke(Sensor):
         while True:
             stats = json.dumps(self.makeStatus())
 
-            self.gateway_basic_client(stats, GATEWAY_SERVICES['ReceiveStatus'])
+            self.gateway_basic_client(stats)
 
-            self.temp += 1
+            self.smoke = not self.smoke
 
             time.sleep(args)
 
@@ -96,7 +98,7 @@ class Light(Sensor):
 
         super().__init__(ip, port, name, type_, queue)
 
-        self.temp = 10
+        self.light = random.randint(0, 100)
 
         thread = Thread(target=self.SendStatus, args=[10])
 
@@ -107,7 +109,7 @@ class Light(Sensor):
         message = Status()
 
         return message(
-            StatusType['TURN_ON_OFF'], self.temp, self._id
+            StatusType['LIGHT_VALUE'], self.light, self._id, GATEWAY_SERVICES['ReceiveStatus']
         )
 
     def SendStatus(self, args):
@@ -115,9 +117,9 @@ class Light(Sensor):
         while True:
             stats = json.dumps(self.makeStatus())
 
-            self.gateway_basic_client(stats, GATEWAY_SERVICES['ReceiveStatus'])
+            self.gateway_basic_client(stats)
 
-            self.temp += 1
+            self.light = random.randint(0, 100)
 
             time.sleep(args)
 
@@ -132,7 +134,7 @@ class Temperature(Sensor):
 
         super().__init__(ip, port, name, type_, queue)
 
-        self.temp = 10
+        self.temp = random.randint(25, 50)
 
         thread = Thread(target=self.SendStatus, args=[10])
 
@@ -143,7 +145,7 @@ class Temperature(Sensor):
         message = Status()
 
         return message(
-            StatusType['TURN_ON_OFF'], self.temp, self._id
+            StatusType['TEMPERATURE'], self.temp, self._id, GATEWAY_SERVICES['ReceiveStatus']
         )
 
     def SendStatus(self, args):
@@ -151,8 +153,8 @@ class Temperature(Sensor):
         while True:
             stats = json.dumps(self.makeStatus())
 
-            self.gateway_basic_client(stats, GATEWAY_SERVICES['ReceiveStatus'])
+            self.gateway_basic_client(stats)
 
-            self.temp += 1
+            self.temp = random.randint(25, 50)
 
             time.sleep(args)

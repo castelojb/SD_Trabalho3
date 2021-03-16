@@ -4,52 +4,56 @@ class FetchStatus:
     def __call__(self, type):
 
         return dict(
-            function='FetchStatus',
+            message='FetchStatus',
             type=type
         )
 
 
 class Killed:
 
-    def __call__(self, id):
+    def __call__(self, id, service):
 
         return dict(
-            function='Killed',
-            id=id
+            message='Killed',
+            id=id,
+            service=service
         )
 
 
 class Id:
 
-    def __call__(self, value):
+    def __call__(self, value, service):
 
         return dict(
-            function='Id',
-            value=value
+            message='Id',
+            value=value,
+            service=service
         )
 
 
 class Identification:
 
-    def __call__(self, name, type, ip, port):
+    def __call__(self, name, type, ip, port, service):
 
         return dict(
-            function='Identification',
+            message='Identification',
             name=name,
             type=type,
             ip=ip,
-            port=port
+            port=port,
+            service=service
         )
 
 
 class Status:
 
-    def __call__(self, type, payload, id):
+    def __call__(self, type, payload, id, service):
 
         return dict(
-            function='Status',
+            message='Status',
             type=type,
             payload=payload,
-            id=id
+            id=id,
+            service=service
         )
 

@@ -15,7 +15,6 @@ GATEWAY_SERVICES = dict(
 )
 
 
-
 EquipmentType = dict(
     BOTH='BOTH',
     SENSOR='SENSOR',
@@ -25,7 +24,9 @@ EquipmentType = dict(
 StatusType = dict(
     TURN_ON_OFF='TURN_ON_OFF',
     TEMPERATURE='TEMPERATURE',
-    ENV_TEMPERATURE='ENV_TEMPERATURE'
+    ENV_TEMPERATURE='ENV_TEMPERATURE',
+    HAVE_SMOKE='HAVE_SMOKE',
+    LIGHT_VALUE='LIGHT_VALUE'
 )
 
 PORT = '5672'
