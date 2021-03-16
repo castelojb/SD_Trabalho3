@@ -4,7 +4,7 @@ from threading import Thread
 
 from models.gateway_clients import GatewayRpcClient, GatewayBasicClient
 from models.messages import *
-from setup import StatusType, EquipmentType, QUEUES, GATEWAY_SERVICES
+from models.setup import StatusType, EquipmentType, QUEUES, GATEWAY_SERVICES
 
 
 class Sensor:
@@ -42,7 +42,7 @@ class Sensor:
     def IdentificateClient(self):
 
         request = json.dumps(self.makeIdentification())
-
+        print(request)
         response = self.gateway_rpc_client(request, self.queue)
 
         self.gateway_rpc_client.kill()

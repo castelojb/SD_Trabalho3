@@ -1,4 +1,4 @@
-URL_GATEWAY = 'localhost'
+URL_GATEWAY = 'amqp://0.tcp.ngrok.io:19342'
 
 QUEUES = dict(
     LIGHT_QUEUE='light',
