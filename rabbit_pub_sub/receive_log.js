@@ -10,7 +10,7 @@ amqp.connect('amqp://localhost', function(error0, connection) {
         if (error1) {
             throw error1;
         }
-        var exchange = 'temperature';
+        var exchange = 'logs';
 
         channel.assertExchange(exchange, 'fanout', {
             durable: false
@@ -27,7 +27,6 @@ amqp.connect('amqp://localhost', function(error0, connection) {
 
             channel.consume(q.queue, function(msg) {
                 if (msg.content) {
-                    // guardar valor e disparar atuador caso necessário
                     console.log(" [x] %s", msg.content.toString());
                 }
             }, {

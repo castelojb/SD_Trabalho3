@@ -10,14 +10,14 @@ amqp.connect('amqp://localhost', function(error0, connection) {
         if (error1) {
             throw error1;
         }
-        var exchange = 'light';
+        var exchange = 'ReceiveStatus';    
 
         channel.assertExchange(exchange, 'fanout', {
             durable: false
         });
 
         channel.assertQueue('', {
-            exclusive: true
+            exclusive: true,
         }, function(error2, q) {
             if (error2) {
                 throw error2;
@@ -27,8 +27,9 @@ amqp.connect('amqp://localhost', function(error0, connection) {
 
             channel.consume(q.queue, function(msg) {
                 if (msg.content) {
-                    // guardar valor e disparar atuador caso necessário
-                    console.log(" [x] %s", msg.content.toString());
+                    // TODO: guardar valor no banco
+                    // TODO: disparar atuador caso necessário
+                    console.log(JSON.parse(msg.content));
                 }
             }, {
                 noAck: true
