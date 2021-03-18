@@ -138,6 +138,7 @@ const SmartThingCard = ({ id, name, type, status }) => {
         width: 300,
         textAlign: "start",
         marginLeft: "20px",
+        marginTop: "20px",
       }}
       actions={
         type !== "SENSOR" &&

@@ -11,6 +11,7 @@ export const Button = styled.button`
 
 export const Container = styled.div`
   display: flex;
+  flex-flow: "wrap";
   @media (max-width: 800px) {
     flex-direction: column;
     position: relative;
