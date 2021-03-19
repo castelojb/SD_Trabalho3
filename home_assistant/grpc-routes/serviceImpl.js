@@ -8,7 +8,8 @@ module.exports = service => ({
     const newEquipment = new Equipment(info.name, info.type)
       .setIp(info.ip)
       .setPort(info.port)
-      .setType(info.type);
+      .setType(info.type)
+      .setSubtype(info.act_type);
     service.registerEquipment(newEquipment);
 
     callback(null, {

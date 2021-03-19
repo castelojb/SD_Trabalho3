@@ -52,12 +52,14 @@ class EquipmentService {
       this.repository.setStatus(id, type, status);
       const address = `${equipment.ip}:${equipment.port}`
       const client = new EquipmentClient(address, grpc.credentials.createInsecure())
-      if (
-        equipment.type === "SENSOR" &&
-        equipment.subtype === "smoke" &&
-        equipment.bondedWith !== undefined
-      ) {
-        this.updateStatus(equipment.bondedWith, "TURN_ON_OFF", equipment.status.HAVE_SMOKE)
+      if (equipment.type === "SENSOR" && equipment.bondedWith !== undefined) {
+        if (equipment.subtype === "smoke") {
+          this.updateStatus(equipment.bondedWith, "TURN_ON_OFF", equipment.status.HAVE_SMOKE)
+        } else if (equipment.subtype === "light") {
+          this.updateStatus(equipment.bondedWith, "TURN_ON_OFF", equipment.status.LIGHT_VALUE < 50 ? 1 : 0)
+        } else if (equipment.subtype === "temperature") {
+          this.updateStatus(equipment.bondedWith, "TEMPERATURE", equipment.status.TEMPERATURE - 10)
+        }
       }
       if (client.type === "actuator") {
         client.ReceiveUpdate({

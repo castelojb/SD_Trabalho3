@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0emessages.proto\x1a\x1bgoogle/protobuf/empty.proto\"(\n\x0b\x46\x65tchStatus\x12\x19\n\x04type\x18\x01 \x01(\x0e\x32\x0b.StatusType\"\x14\n\x06Killed\x12\n\n\x02id\x18\x01 \x01(\t\"\x13\n\x02Id\x12\r\n\x05value\x18\x01 \x01(\t\"V\n\x0eIdentification\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1c\n\x04type\x18\x02 \x01(\x0e\x32\x0e.EquipmentType\x12\n\n\x02ip\x18\x03 \x01(\t\x12\x0c\n\x04port\x18\x04 \x01(\x05\"@\n\x06Status\x12\x19\n\x04type\x18\x01 \x01(\x0e\x32\x0b.StatusType\x12\x0f\n\x07payload\x18\x02 \x01(\x01\x12\n\n\x02id\x18\x03 \x01(\t\":\n\x0cUpdateStatus\x12\x19\n\x04type\x18\t \x01(\x0e\x32\x0b.StatusType\x12\x0f\n\x07payload\x18\n \x01(\x01*3\n\rEquipmentType\x12\x08\n\x04\x42OTH\x10\x00\x12\n\n\x06SENSOR\x10\x01\x12\x0c\n\x08\x41\x43TUATOR\x10\x02*C\n\nStatusType\x12\x0f\n\x0bTURN_ON_OFF\x10\x00\x12\x0f\n\x0bTEMPERATURE\x10\x01\x12\x13\n\x0f\x45NV_TEMPERATURE\x10\x02\x32\x87\x01\n\x0eGatewayService\x12$\n\x0cIdentificate\x12\x0f.Identification\x1a\x03.Id\x12!\n\rReceiveStatus\x12\x07.Status\x1a\x07.Status\x12,\n\rEquipmentDied\x12\x03.Id\x1a\x16.google.protobuf.Empty2\xa7\x01\n\x10\x45quipmentService\x12\x37\n\x0cIdentificate\x12\x16.google.protobuf.Empty\x1a\x0f.Identification\x12\x36\n\rReceiveUpdate\x12\r.UpdateStatus\x1a\x16.google.protobuf.Empty\x12\"\n\tGetStatus\x12\x0c.FetchStatus\x1a\x07.Statusb\x06proto3'
+  serialized_pb=b'\n\x0emessages.proto\x1a\x1bgoogle/protobuf/empty.proto\"(\n\x0b\x46\x65tchStatus\x12\x19\n\x04type\x18\x01 \x01(\x0e\x32\x0b.StatusType\"\x14\n\x06Killed\x12\n\n\x02id\x18\x01 \x01(\t\"\x13\n\x02Id\x12\r\n\x05value\x18\x01 \x01(\t\"w\n\x0eIdentification\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1c\n\x04type\x18\x02 \x01(\x0e\x32\x0e.EquipmentType\x12\n\n\x02ip\x18\x03 \x01(\t\x12\x0c\n\x04port\x18\x04 \x01(\x05\x12\x1f\n\x08\x61\x63t_type\x18\x05 \x01(\x0e\x32\r.ActuatorType\"@\n\x06Status\x12\x19\n\x04type\x18\x01 \x01(\x0e\x32\x0b.StatusType\x12\x0f\n\x07payload\x18\x02 \x01(\x01\x12\n\n\x02id\x18\x03 \x01(\t\":\n\x0cUpdateStatus\x12\x19\n\x04type\x18\t \x01(\x0e\x32\x0b.StatusType\x12\x0f\n\x07payload\x18\n \x01(\x01*3\n\rEquipmentType\x12\x08\n\x04\x42OTH\x10\x00\x12\n\n\x06SENSOR\x10\x01\x12\x0c\n\x08\x41\x43TUATOR\x10\x02*2\n\x0c\x41\x63tuatorType\x12\x06\n\x02\x41r\x10\x00\x12\x0b\n\x07Lampada\x10\x01\x12\r\n\tSprinkler\x10\x02*C\n\nStatusType\x12\x0f\n\x0bTURN_ON_OFF\x10\x00\x12\x0f\n\x0bTEMPERATURE\x10\x01\x12\x13\n\x0f\x45NV_TEMPERATURE\x10\x02\x32\x87\x01\n\x0eGatewayService\x12$\n\x0cIdentificate\x12\x0f.Identification\x1a\x03.Id\x12!\n\rReceiveStatus\x12\x07.Status\x1a\x07.Status\x12,\n\rEquipmentDied\x12\x03.Id\x1a\x16.google.protobuf.Empty2\xa7\x01\n\x10\x45quipmentService\x12\x37\n\x0cIdentificate\x12\x16.google.protobuf.Empty\x1a\x0f.Identification\x12\x36\n\rReceiveUpdate\x12\r.UpdateStatus\x1a\x16.google.protobuf.Empty\x12\"\n\tGetStatus\x12\x0c.FetchStatus\x1a\x07.Statusb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -50,12 +50,43 @@ _EQUIPMENTTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=346,
-  serialized_end=397,
+  serialized_start=379,
+  serialized_end=430,
 )
 _sym_db.RegisterEnumDescriptor(_EQUIPMENTTYPE)
 
 EquipmentType = enum_type_wrapper.EnumTypeWrapper(_EQUIPMENTTYPE)
+_ACTUATORTYPE = _descriptor.EnumDescriptor(
+  name='ActuatorType',
+  full_name='ActuatorType',
+  filename=None,
+  file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='Ar', index=0, number=0,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='Lampada', index=1, number=1,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='Sprinkler', index=2, number=2,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=432,
+  serialized_end=482,
+)
+_sym_db.RegisterEnumDescriptor(_ACTUATORTYPE)
+
+ActuatorType = enum_type_wrapper.EnumTypeWrapper(_ACTUATORTYPE)
 _STATUSTYPE = _descriptor.EnumDescriptor(
   name='StatusType',
   full_name='StatusType',
@@ -81,8 +112,8 @@ _STATUSTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=399,
-  serialized_end=466,
+  serialized_start=484,
+  serialized_end=551,
 )
 _sym_db.RegisterEnumDescriptor(_STATUSTYPE)
 
@@ -90,6 +121,9 @@ StatusType = enum_type_wrapper.EnumTypeWrapper(_STATUSTYPE)
 BOTH = 0
 SENSOR = 1
 ACTUATOR = 2
+Ar = 0
+Lampada = 1
+Sprinkler = 2
 TURN_ON_OFF = 0
 TEMPERATURE = 1
 ENV_TEMPERATURE = 2
@@ -228,6 +262,13 @@ _IDENTIFICATION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='act_type', full_name='Identification.act_type', index=4,
+      number=5, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -241,7 +282,7 @@ _IDENTIFICATION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=132,
-  serialized_end=218,
+  serialized_end=251,
 )
 
 
@@ -286,8 +327,8 @@ _STATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=220,
-  serialized_end=284,
+  serialized_start=253,
+  serialized_end=317,
 )
 
 
@@ -325,12 +366,13 @@ _UPDATESTATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=286,
-  serialized_end=344,
+  serialized_start=319,
+  serialized_end=377,
 )
 
 _FETCHSTATUS.fields_by_name['type'].enum_type = _STATUSTYPE
 _IDENTIFICATION.fields_by_name['type'].enum_type = _EQUIPMENTTYPE
+_IDENTIFICATION.fields_by_name['act_type'].enum_type = _ACTUATORTYPE
 _STATUS.fields_by_name['type'].enum_type = _STATUSTYPE
 _UPDATESTATUS.fields_by_name['type'].enum_type = _STATUSTYPE
 DESCRIPTOR.message_types_by_name['FetchStatus'] = _FETCHSTATUS
@@ -340,6 +382,7 @@ DESCRIPTOR.message_types_by_name['Identification'] = _IDENTIFICATION
 DESCRIPTOR.message_types_by_name['Status'] = _STATUS
 DESCRIPTOR.message_types_by_name['UpdateStatus'] = _UPDATESTATUS
 DESCRIPTOR.enum_types_by_name['EquipmentType'] = _EQUIPMENTTYPE
+DESCRIPTOR.enum_types_by_name['ActuatorType'] = _ACTUATORTYPE
 DESCRIPTOR.enum_types_by_name['StatusType'] = _STATUSTYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -394,8 +437,8 @@ _GATEWAYSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=469,
-  serialized_end=604,
+  serialized_start=554,
+  serialized_end=689,
   methods=[
   _descriptor.MethodDescriptor(
     name='Identificate',
@@ -440,8 +483,8 @@ _EQUIPMENTSERVICE = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=607,
-  serialized_end=774,
+  serialized_start=692,
+  serialized_end=859,
   methods=[
   _descriptor.MethodDescriptor(
     name='Identificate',
