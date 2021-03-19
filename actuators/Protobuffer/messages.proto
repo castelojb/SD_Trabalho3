@@ -38,6 +38,14 @@ message Identification {
   EquipmentType type = 2;
   string ip = 3;
   int32 port = 4;
+  ActuatorType act_type=5;
+
+}
+
+enum ActuatorType {
+  Ar=0;
+  Lampada=1;
+  Sprinkler=2;
 }
 
 enum StatusType {

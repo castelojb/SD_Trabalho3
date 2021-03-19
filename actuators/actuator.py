@@ -10,11 +10,12 @@ import struct
 
 class Equipment:
 
-    def __init__(self, ip, port, name, type_):
+    def __init__(self, ip, port, name, type_, act_type):
         self.ip = ip
         self.port = port
         self.name = name
         self.type = type_
+        self.act_type = act_type
 
         self.MakeConnection(URL_GATEWAY)
 
@@ -53,7 +54,8 @@ class Equipment:
             name=self.name,
             ip=self.ip,
             port=self.port,
-            type=self.type
+            type=self.type,
+            act_type=self.act_type,
         )
 
     def IdentificateClient(self):
@@ -83,9 +85,9 @@ class Equipment:
 
 class Actuator(Equipment):
 
-    def __init__(self, ip, port, name):
+    def __init__(self, ip, port, name, act_type):
 
-        super().__init__(ip, port, name, messages_pb2.ACTUATOR)
+        super().__init__(ip, port, name, messages_pb2.ACTUATOR, act_type)
 
         self.temp = random.randint(0, 100)
 
@@ -133,3 +135,21 @@ class Actuator(Equipment):
         response = self.makeStatus(request.type)
 
         return response
+
+class Ar(Actuator):
+
+    def __init__(self, ip, port, name):
+
+        super().__init__(ip, port, name, messages_pb2.Ar)
+
+class Lampada(Actuator):
+
+    def __init__(self, ip, port, name):
+
+        super().__init__(ip, port, name, messages_pb2.Lampada)
+
+class Sprinkler(Actuator):
+
+    def __init__(self, ip, port, name):
+
+        super().__init__(ip, port, name, messages_pb2.Sprinkler)

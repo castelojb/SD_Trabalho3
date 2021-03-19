@@ -1,4 +1,4 @@
-from actuator import Actuator
+from actuator import Ar, Lampada, Sprinkler
 import grpc
 from concurrent import futures
 from Protobuffer import messages_pb2_grpc
@@ -19,11 +19,19 @@ if __name__ == '__main__':
     type_ = sys.argv[1]
     name = sys.argv[2]
     port = int(sys.argv[3])
+    
 
-    if type_ == 'actuator':
-        eq = Actuator(external_ip, port, name)
+    if type_ == 'ar':
+        eq = Ar(external_ip, port, name)
+    
+    elif type_ == 'lampada':
+        eq = Lampada(external_ip, port, name)
+    
+    elif type_ == 'sprinkler':
+        eq = Sprinkler(external_ip, port, name)
+
     else:
-        raise Exception(f'Received: {type_} must be: actuator or sensor')
+        raise Exception(f'Received: {type_} must be: ar, lampada or sprinkler')
 
     # Run a gRPC server with one thread.
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
