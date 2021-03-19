@@ -31,6 +31,7 @@ const Home = () => {
             name={equipment.name}
             status={equipment.status}
             type={equipment.type}
+            subtype={equipment.subtype}
           />
         ))}
       </Container>

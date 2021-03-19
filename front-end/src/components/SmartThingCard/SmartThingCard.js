@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Card, Switch, InputNumber, Button, Progress } from "antd";
 import useService from "../../hooks/useService";
 
-const SmartThingCard = ({ id, name, type, status }) => {
+const SmartThingCard = ({ id, name, type, status, subtype }) => {
   const [pageStatus, setPageStatus] = useState(status?.TURN_ON_OFF);
-  const [temperature, setTemperature] = useState(status?.VALUE);
+  const [value, setValue] = useState(
+    status?.TEMPERATURE || status?.LIGHT_VALUE || status?.HAVE_SMOKE
+  );
   let equipmentDetails = null;
   const { changeStatus } = useService();
-
+  console.log(status);
   useEffect(() => {
     if (status?.TURN_ON_OFF !== undefined)
       setPageStatus(Number(status?.TURN_ON_OFF));
@@ -15,7 +17,6 @@ const SmartThingCard = ({ id, name, type, status }) => {
 
   useEffect(() => {
     if (pageStatus !== undefined) {
-      console.log(pageStatus);
       changeStatus(
         id,
         Number(pageStatus),
@@ -25,12 +26,12 @@ const SmartThingCard = ({ id, name, type, status }) => {
         () => {}
       );
     }
-  }, [pageStatus]);
+  }, [pageStatus, changeStatus, id]);
 
   const SaveValue = () => {
     changeStatus(
       id,
-      temperature,
+      value,
       "VALUE",
       () => {},
       () => {},
@@ -38,22 +39,8 @@ const SmartThingCard = ({ id, name, type, status }) => {
     );
   };
 
-  const renderEnvTemperature = () =>
-    status.ENV_TEMPERATURE !== undefined && (
-      <>
-        <Progress
-          type='circle'
-          percent={status.ENV_TEMPERATURE}
-          format={percert => `${percert}°C`}
-          width={80}
-          size='small'
-        />
-        <p>{`Temperatura no ambiente: ${status.ENV_TEMPERATURE}°C`}</p>
-      </>
-    );
-
   const renderTemperature = () =>
-    status.VALUE !== undefined && (
+    status.TEMPERATURE !== undefined && (
       <div
         style={{
           display: "flex",
@@ -61,10 +48,10 @@ const SmartThingCard = ({ id, name, type, status }) => {
           alignItems: "flex-start",
         }}
       >
-        <InputNumber value={temperature} onChange={setTemperature} />
+        <InputNumber value={value} onChange={setValue} />
         <Progress
           type='circle'
-          percent={status.VALUE}
+          percent={status.TEMPERATURE}
           format={percert => `${percert}°C`}
           width={80}
           size='small'
@@ -72,30 +59,7 @@ const SmartThingCard = ({ id, name, type, status }) => {
       </div>
     );
 
-  if (type === "BOTH") {
-    equipmentDetails = (
-      <>
-        <p>Sensor e atuador</p>
-        {status.TURN_ON_OFF !== undefined && (
-          <>
-            <p>{`Equipamento está ${pageStatus ? "Ligado" : "Desligado"}`}</p>
-          </>
-        )}
-        {status.VALUE !== undefined && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            {renderTemperature()}
-            {renderEnvTemperature()}
-          </div>
-        )}
-      </>
-    );
-  } else if (type === "ACTUATOR") {
+  if (type === "ACTUATOR") {
     equipmentDetails = (
       <>
         <p>Atuador</p>
@@ -108,18 +72,36 @@ const SmartThingCard = ({ id, name, type, status }) => {
       </>
     );
   } else if (type === "SENSOR") {
-    equipmentDetails = (
-      <>
-        <p>Sensor</p>
-        <Progress
-          type='circle'
-          percent={status.VALUE}
-          format={percert => `${percert}°C`}
-          width={80}
-          size='small'
-        />
-      </>
-    );
+    if (subtype) {
+      equipmentDetails = (
+        <>
+          <p>Sensor {subtype}</p>
+          {status.HAVE_SMOKE !== undefined && (
+            <>
+              <p>{`Tem Fumaça? ${status.HAVE_SMOKE ? "Sim" : "Não"}`}</p>
+            </>
+          )}
+          {status.LIGHT_VALUE !== undefined && (
+            <Progress
+              type='circle'
+              percent={status.LIGHT_VALUE}
+              format={percert => `${percert} de luminosidade`}
+              width={80}
+              size='small'
+            />
+          )}
+          {status.TEMPERATURE !== undefined && (
+            <Progress
+              type='circle'
+              percent={status.TEMPERATURE}
+              format={percert => `${percert}°C`}
+              width={80}
+              size='small'
+            />
+          )}
+        </>
+      );
+    }
   }
 
   return (
