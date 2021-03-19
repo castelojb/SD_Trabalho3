@@ -9,7 +9,7 @@ const SmartThingCard = ({ id, name, type, status, subtype }) => {
   );
   let equipmentDetails = null;
   const { changeStatus } = useService();
-  console.log(status);
+  //console.log(status);
   useEffect(() => {
     if (status?.TURN_ON_OFF !== undefined)
       setPageStatus(Number(status?.TURN_ON_OFF));
@@ -38,8 +38,7 @@ const SmartThingCard = ({ id, name, type, status, subtype }) => {
       () => {}
     );
   };
-
-  const renderTemperature = () =>
+  const renderActuatorValue = () =>
     status.TEMPERATURE !== undefined && (
       <div
         style={{
@@ -48,7 +47,7 @@ const SmartThingCard = ({ id, name, type, status, subtype }) => {
           alignItems: "flex-start",
         }}
       >
-        <InputNumber value={value} onChange={setValue} />
+        {/*<InputNumber value={value} onChange={setValue} />*/}
         <Progress
           type='circle'
           percent={status.TEMPERATURE}
@@ -68,7 +67,8 @@ const SmartThingCard = ({ id, name, type, status, subtype }) => {
             <p>{`Equipamento está ${pageStatus ? "Ligado" : "Desligado"}`}</p>
           </>
         )}
-        {renderTemperature()}
+
+        {subtype === "Ar" && renderActuatorValue()}
       </>
     );
   } else if (type === "SENSOR") {
@@ -85,7 +85,7 @@ const SmartThingCard = ({ id, name, type, status, subtype }) => {
             <Progress
               type='circle'
               percent={status.LIGHT_VALUE}
-              format={percert => `${percert} de luminosidade`}
+              format={percert => `${percert} lúmens`}
               width={80}
               size='small'
             />
@@ -122,10 +122,11 @@ const SmartThingCard = ({ id, name, type, status, subtype }) => {
         marginLeft: "20px",
         marginTop: "20px",
       }}
-      actions={
-        type !== "SENSOR" &&
-        status.VALUE && [<Button onClick={SaveValue}>Salvar valor</Button>]
-      }
+      //actions={
+      //  type !== "SENSOR" &&
+      //  status.TEMPERATURE &&
+      //  subtype === "Ar" && [<Button onClick={SaveValue}>Salvar valor</Button>]
+      //}
     >
       {equipmentDetails}
     </Card>
