@@ -1,5 +1,4 @@
 const { getChannelForQueue } = require("./utils");
-const equipmentsService = require("../service/inMemoryDependency");
 const { listenForSensorServices } = require("./sensor");
 
 const QUEUE_NAME = "temperature"

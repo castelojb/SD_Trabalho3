@@ -38,7 +38,7 @@ class Sensor:
     def makeIdentification(self):
         message = Identification()
         return message(
-            self.name, self.type, self.ip, self.port, GATEWAY_SERVICES['Identificate']
+            self.name, self.type, self.ip, self.port, GATEWAY_SERVICES['Identificate'], self.queue
         )
 
     def IdentificateClient(self):
@@ -73,7 +73,7 @@ class Smoke(Sensor):
         message = Status()
 
         return message(
-            StatusType['HAVE_SMOKE'], self.smoke, self._id, GATEWAY_SERVICES['ReceiveStatus']
+            StatusType['HAVE_SMOKE'], int(self.smoke), self._id, GATEWAY_SERVICES['ReceiveStatus']
         )
 
     def SendStatus(self, args):

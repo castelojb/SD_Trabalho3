@@ -1,0 +1,58 @@
+syntax= "proto3";
+import "google/protobuf/empty.proto";
+
+// Services definitions
+service GatewayService {
+  rpc Identificate(Identification) returns (Id);
+  rpc ReceiveStatus(Status) returns (Status);
+  rpc EquipmentDied(Id) returns (google.protobuf.Empty);
+}
+
+service EquipmentService {
+  rpc Identificate(google.protobuf.Empty) returns (Identification);
+  rpc ReceiveUpdate(UpdateStatus) returns (google.protobuf.Empty);
+  rpc GetStatus(FetchStatus) returns (Status);
+}
+
+message FetchStatus {
+  StatusType type = 1;
+}
+
+message Killed {
+  string id = 1;
+}
+
+message Id {
+  string value = 1;
+}
+
+enum EquipmentType {
+  BOTH = 0;
+  SENSOR = 1;
+  ACTUATOR = 2;
+}
+
+// Messages definitions
+message Identification {
+  string name = 1;
+  EquipmentType type = 2;
+  string ip = 3;
+  int32 port = 4;
+}
+
+enum StatusType {
+  TURN_ON_OFF = 0;
+  TEMPERATURE = 1;
+  ENV_TEMPERATURE = 2;
+}
+
+message Status {
+  StatusType type = 1;
+  double payload = 2; // Ex: 20 (graus)
+  string id = 3;
+}
+
+message UpdateStatus {
+  StatusType type = 9; // Ex: temperature
+  double payload = 10; // Ex: 20 (graus)
+}

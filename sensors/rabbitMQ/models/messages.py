@@ -33,7 +33,7 @@ class Id:
 
 class Identification:
 
-    def __call__(self, name, type, ip, port, service):
+    def __call__(self, name, type, ip, port, service, sensor_type):
 
         return dict(
             message='Identification',
@@ -41,7 +41,8 @@ class Identification:
             type=type,
             ip=ip,
             port=port,
-            service=service
+            service=service,
+            sensor_type=sensor_type
         )
 
 

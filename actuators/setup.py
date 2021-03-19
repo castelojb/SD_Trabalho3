@@ -1,0 +1,2 @@
+URL_GATEWAY = 'localhost:3001'
+SERVER_ADRESS = ('', 3456)

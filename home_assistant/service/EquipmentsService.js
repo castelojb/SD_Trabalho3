@@ -6,29 +6,6 @@ class EquipmentService {
     this.repository = repository;
   }
 
-  // populateStatus(equipment) {
-  //     const client = new EquipmentClient(
-  //         `${equipment.ip}:${equipment.port}`,
-  //         grpc.credentials.createInsecure()
-  //     )
-  //     return new Promise((resolve, reject) => {
-  //         Promise.all(['VALUE', 'TURN_ON_OFF'].map(type =>
-  //             new Promise((resolve, reject) =>
-  //                 client.GetStatus({ type }, (error, response) => {
-  //                     if (error) reject(error)
-  //                     resolve(response)
-  //                 })
-  //             )
-  //         )).then(([temperatureStatus, tunnedOnStatus]) => {
-  //             resolve(
-  //                 equipment
-  //                 .setStatus(temperatureStatus.type, temperatureStatus.payload)
-  //                 .setStatus(tunnedOnStatus.type, tunnedOnStatus.payload)
-  //             )
-  //         }).catch(reject)
-  //     })
-  // }
-
   getEquipments() {
     return Promise.resolve(this.repository.getAll());
   }
@@ -41,18 +18,24 @@ class EquipmentService {
     return this.repository.removeById(id);
   }
 
+  bondEquipments(id1, id2) {
+    return this.repository.bondEquipments(id1, id2);
+  }
+
   getEquipmentStatus(id, type) {
     const equipment = this.repository.getById(id);
-    const client = new EquipmentClient(
-      `${equipment.ip}:${equipment.port}`,
-      grpc.credentials.createInsecure()
-    );
-    return new Promise((resolve, reject) => {
-      client.GetStatus({ type }, (error, response) => {
-        if (error) return reject(error);
-        resolve(response);
+    if (equipment) {
+      const client = new EquipmentClient(
+        `${equipment.ip}:${equipment.port}`,
+        grpc.credentials.createInsecure()
+      );
+      return new Promise((resolve, reject) => {
+        client.GetStatus({ type }, (error, response) => {
+          if (error) return reject(error);
+          resolve(response);
+        });
       });
-    });
+    }
   }
 
   async getEquipmentsOfType(type) {
@@ -65,16 +48,25 @@ class EquipmentService {
 
   updateStatus(id, type, status) {
     const equipment = this.repository.getById(id);
-    this.repository.setStatus(id, type, status);
-    const address = `${equipment.ip}:${equipment.port}`
-    const client = new EquipmentClient(address, grpc.credentials.createInsecure())
-    if (client.type === "actuator") {
-      client.ReceiveUpdate({
-        type,
-        payload: status
-      }, (error, response) => {
-          if (error) throw error;
-      })
+    if (equipment) {
+      this.repository.setStatus(id, type, status);
+      const address = `${equipment.ip}:${equipment.port}`
+      const client = new EquipmentClient(address, grpc.credentials.createInsecure())
+      if (
+        equipment.type === "SENSOR" &&
+        equipment.subtype === "smoke" &&
+        equipment.bondedWith !== undefined
+      ) {
+        this.updateStatus(equipment.bondedWith, "TURN_ON_OFF", equipment.status.HAVE_SMOKE)
+      }
+      if (client.type === "actuator") {
+        client.ReceiveUpdate({
+          type,
+          payload: status
+        }, (error, response) => {
+            if (error) throw error;
+        })
+      }
     }
   }
 }

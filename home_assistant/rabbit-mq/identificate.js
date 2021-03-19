@@ -5,11 +5,13 @@ const { getChannelForQueue } = require("./utils");
 const QUEUE_NAME = "identificate"
 
 function handleMessaging({ channel, content: identificate, properties: { replyTo, correlationId } }) {
-    const equipment = new Equipment(identificate.name, identificate.type)
+    let equipment = new Equipment(identificate.name, identificate.type)
         .setIp(identificate.ip)
         .setPort(identificate.port)
+    
+    if (equipment.type === "SENSOR") equipment = equipment.setSubtype(identificate.sensor_type)
     equipmentsService.registerEquipment(equipment)
-
+    console.log(identificate)
     const EquipmentId = { value: equipment.id }
     channel.sendToQueue(replyTo, Buffer.from(JSON.stringify(EquipmentId)), {
         correlationId

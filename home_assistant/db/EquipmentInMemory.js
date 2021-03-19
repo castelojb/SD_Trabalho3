@@ -49,6 +49,20 @@ class EquipmentsInMemory {
     this.updateDb();
   }
 
+  bondEquipments(id1, id2) {
+    this.equipments = this.equipments.map(e => {
+      if (e.id === id1) {
+        let bonded = e.bondWith(id2)
+        return bonded
+      } else if (e.id === id2) {
+        return e.bondWith(id1)
+      } else {
+        return e
+      }
+    });
+    this.updateDb();
+  }
+
   setStatus(id, type, status) {
     this.equipments = this.equipments.map(e => {
       if (e.id === id) {
